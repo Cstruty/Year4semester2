@@ -1,0 +1,4 @@
+How to compile program: make all
+how to run program:./A2 {filenames}
+example: ./A2 wonderland.txt SIG text.txt helloworld.txt
+how to remove hist files and executable: make clean

@@ -1,0 +1,43 @@
+compile: make all
+execute P11:
+./P11
+please enter file name
+data_A3_Q1.txt
+The maximum number of intervals: 15057
+the interval include the point 21713
+Elapsed time: 8918 ms
+execute P12:
+./P12
+Please enter file name: data_A3_Q1.txt
+The maximum number of intervals: 15057
+the interval include the point 21713
+Elapsed time: 12723 ms
+execute p21:
+./P21
+Brute Force String Search
+Please enter the pattern: 
+maintain
+Count = 1
+Shifts= 41
+Elapsed time: 0 ms
+execute p22:
+Please enter the pattern: 
+maintain
+Count = 137
+Shifts= 499554
+Elapsed time: 5 ms
+2.4:
+when calculating an average ratio the value found was 0.33and time was 1.01
+the words used were : a maintain to why like my me testing two align
+when using longer words the horspool algorithm seems to have way less shifts but with shorter word the shifts are approximately the same
+for time there was no disernamble result that can be concluded. Maybe with different numbers it could be but the ratio was 1:1 for me
+words:   P22:        P21:   shift ratio    P22      p21     time ratio
+A       3296601     3252553 1.01            29      16      1.8
+maintain 499554     same    0.15            17      19      0.89
+to      1707743             0.525           12      17      0.7
+why     1120381             0.344           11      16      0.68
+like    858825              0.2640          11      16      0.68
+my      1668804             0.5130          16      19      0.84
+testing 577381              0.1175          17      16      1.06
+two     1131976             0.3480          6       15      0.4
+align   714644              0.219717864     12      16      0.75

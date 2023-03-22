@@ -1,0 +1,4 @@
+-compile the program with:gcc A1.c -Wall -g -std=c11 -o A1
+-to run: ./A1
+-after entering input, please press space confirm input
+-please let me know if anything is wrong with my submission
