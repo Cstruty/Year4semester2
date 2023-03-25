@@ -1,0 +1,38 @@
+hello hello goo test undergraduate for (int i = 0; i < N && men_engaged[m] == -1; i++)
+        {
+            printtable(N, marriages);
+            // printf("men_ramk%d i=%d\n", men_rank[m][i], i);
+            int w = men_rank[m][i];
+            // if the woman is free, engage the man and woman
+
+            if (isWomanFree(women_engaged))
+            {
+                women_engaged[w] = m;
+                men_engaged[m] = w;
+                marriages[m][w] = 1;
+                free_count--;
+            }
+            else
+            {
+                // if the woman prefers the man over her current partner, engage the man and woman
+                int m1 = women_engaged[w];
+                if (doesManPrefer(women_rank, m, w, m1))
+                {
+                    men_engaged[m1] = -1;
+                    marriages[m1][w] = 0;
+                    women_engaged[w] = m;
+                    men_engaged[m] = w;
+                    marriages[m][w] = 1;
+                }
+            }
+        }
+4
+1  2  3  4 
+1  4  3  2
+2  1  3  4
+4  2  3  1 
+
+4  3  1  2 
+2  4  1  3
+4  1  3  2
+3  2  1  4

@@ -1,0 +1,26 @@
+how to compile all the programs: make all
+examples of how to run
+P11:
+ ./P11
+please enter word
+undergraduate
+Compared with of (6.093), go right subtree
+Compared with the (1.972), go right subtree
+Compared with university (0.412), go left subtree
+Compared with to (0.156), go right subtree
+Compared with undergraduate (0.053), found
+P12:
+ ./P12
+please enter word
+undergraduate
+Compared with the (0.061), go right subtree
+Compared with to (0.031), go right subtree
+Compared with university (0.018), go left subtree
+Compared with universities (0.005), go left subtree
+Compared with undergraduate (0.004), found
+P2:
+./P2 
+0       0       1       0
+0       0       0       1
+1       0       0       0
+0       1       0       0

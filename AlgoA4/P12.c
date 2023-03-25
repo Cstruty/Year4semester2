@@ -13,8 +13,6 @@ typedef struct node
     struct node *left;
     struct node *right;
 } Node;
-int R[MAX_WORDS][MAX_WORDS];
-float C[MAX_WORDS][MAX_WORDS] = {0};
 //node creation
 Node *createNode(char key[MAX_LEN], float P)
 {
@@ -25,7 +23,7 @@ Node *createNode(char key[MAX_LEN], float P)
     newNode->right = NULL;
     return newNode;
 }
-//freeing tree
+//free the tree
 void freeTree(Node *root)
 {
     if (root != NULL)
@@ -56,44 +54,7 @@ void sort_strings(char arr[MAX_WORDS][MAX_LEN], int n, int count[MAX_WORDS])
         }
     }
 }
-//creating optimal BST
-int optimalBST(char keys[MAX_WORDS][MAX_LEN], int n, int R[MAX_WORDS][MAX_WORDS], float C[MAX_WORDS][MAX_WORDS], float P[MAX_WORDS])
-{
-    int i, j, k, d;
-    float minval, sum;
-    for (i = 1; i <= n; i++)
-    {
-        C[i][i - 1] = 0;
-        C[i][i] = P[i];
-        R[i][i] = i;
-    }
-    C[n + 1][n] = 0;
 
-    for (d = 1; d <= n - 1; d++)
-    {
-        for (i = 1; i <= n - d; i++)
-        {
-            j = i + d;
-            minval = INT_MAX;
-            for (k = i; k <= j; k++)
-            {
-                if (C[i][k - 1] + C[k + 1][j] < minval)
-                {
-                    minval = C[i][k - 1] + C[k + 1][j];
-                    R[i][j] = k;
-                }
-            }
-            sum = P[i];
-            for (k = i + 1; k <= j; k++)
-            {
-                sum += P[k];
-            }
-            C[i][j] = minval + sum;
-        }
-    }
-
-    return C[1][n];
-}
 //print tree for testing
 void printTree(Node *root, int level)
 {
@@ -109,17 +70,29 @@ void printTree(Node *root, int level)
     printf("%s %f\n", root->word, root->Prob); // print the word stored in the current node
     printTree(root->left, level + 1);          // recursively print the left subtree
 }
-//creates the optimal BST by using the R array
-Node *buildOptimalBST(char keys[MAX_WORDS][MAX_LEN], int R[][MAX_WORDS], int i, int j, float P[MAX_WORDS])
+//creates the Greedy BST by using the R array
+Node *buildGreedyBST(char keys[MAX_WORDS][MAX_LEN], int start, int end, float P[MAX_WORDS])
 {
-    if (i >= j)
+    if (start >= end)
     {
         return NULL;
     }
-    int rootIndex = R[i][j];
-    Node *root = createNode(keys[rootIndex], C[i][j]);
-    root->left = buildOptimalBST(keys, R, i, rootIndex - 1, P);
-    root->right = buildOptimalBST(keys, R, rootIndex + 1, j, P);
+    //find the word with largest prob
+    double prob = 0;
+    int index = start;
+    for (int i = start; i < end; i++)
+    {
+        if (P[i] > prob)
+        {
+
+            index = i;
+            prob = P[i];
+        }
+    }
+    //splits table in half
+    Node *root = createNode(keys[index], prob);
+    root->left = buildGreedyBST(keys, start, index, P);
+    root->right = buildGreedyBST(keys, index + 1, end, P);
     return root;
 }
 void search(Node *root, char *word)
@@ -198,14 +171,14 @@ int main()
         probability[i] = ((float)count[i] / MAX_WORDS);
     }
     //computes the optimalBST puts in R and C
-    optimalBST(keys, totalWords, R, C, probability);
+    Node *root = buildGreedyBST(keys, 0, totalWords, probability);
     //gets user input
     char searchword[MAX_LEN];
     printf("please enter word\n");
     fgets(searchword, MAX_LEN, stdin);
     searchword[strcspn(searchword, "\n")] = 0;
     //builds the optimalBST
-    Node *root = buildOptimalBST(keys, R, 1, totalWords, probability);
+
     //search using search word
     search(root, searchword);
     fclose(fp);
