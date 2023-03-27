@@ -1,8 +1,11 @@
+//Collin Struthers A4 1084915 March 25 2023
+//This function make a optimal binary search tree
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <float.h>
 #define MAX_WORDS 2045
 #define MAX_LEN 50
 //node
@@ -13,7 +16,7 @@ typedef struct node
     struct node *left;
     struct node *right;
 } Node;
-int R[MAX_WORDS][MAX_WORDS];
+int R[MAX_WORDS][MAX_WORDS] = {0};
 float C[MAX_WORDS][MAX_WORDS] = {0};
 //node creation
 Node *createNode(char key[MAX_LEN], float P)
@@ -57,10 +60,12 @@ void sort_strings(char arr[MAX_WORDS][MAX_LEN], int n, int count[MAX_WORDS])
     }
 }
 //creating optimal BST
-int optimalBST(char keys[MAX_WORDS][MAX_LEN], int n, int R[MAX_WORDS][MAX_WORDS], float C[MAX_WORDS][MAX_WORDS], float P[MAX_WORDS])
+int optimalBST(char keys[MAX_WORDS][MAX_LEN], int n, float P[MAX_WORDS])
 {
     int i, j, k, d;
-    float minval, sum;
+    float minval = 0.0, sum;
+    minval = DBL_MAX;
+    memset(C, 0.0, sizeof(C[0][0]) * n * n);
     for (i = 1; i <= n; i++)
     {
         C[i][i - 1] = 0;
@@ -74,7 +79,7 @@ int optimalBST(char keys[MAX_WORDS][MAX_LEN], int n, int R[MAX_WORDS][MAX_WORDS]
         for (i = 1; i <= n - d; i++)
         {
             j = i + d;
-            minval = INT_MAX;
+            minval = DBL_MAX;
             for (k = i; k <= j; k++)
             {
                 if (C[i][k - 1] + C[k + 1][j] < minval)
@@ -150,7 +155,7 @@ int main()
 
     char word[MAX_LEN], keys[MAX_WORDS][MAX_LEN];
     int totalWords = 0, found = 0;
-    float probability[MAX_WORDS];
+    float probability[MAX_WORDS] = {0};
     int count[MAX_WORDS] = {0};
     FILE *fp = fopen(filename, "r"); // opens the file for reading
     while (fscanf(fp, "%s", word) != EOF)
@@ -198,7 +203,7 @@ int main()
         probability[i] = ((float)count[i] / MAX_WORDS);
     }
     //computes the optimalBST puts in R and C
-    optimalBST(keys, totalWords, R, C, probability);
+    optimalBST(keys, totalWords, probability);
     //gets user input
     char searchword[MAX_LEN];
     printf("please enter word\n");

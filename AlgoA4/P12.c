@@ -1,3 +1,5 @@
+//Collin Struthers A4 1084915 March 25 2023
+//This function make a greedy search tree
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>

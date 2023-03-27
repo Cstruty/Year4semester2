@@ -1,3 +1,5 @@
+//Collin Struthers A4 1084915 March 25 2023
+//This function solves the stable marriage problem
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
@@ -115,6 +117,10 @@ void stableMarriage(int **men_rank, int **women_rank, int **marriages)
 int main()
 {
     char filename[MAX_LEN] = "data_A4_Q2.txt";
+    printf("please enter a file name\n");
+    fgets(filename, MAX_LEN, stdin);
+    filename[strcspn(filename, "\n")] = 0;
+
     FILE *fp = fopen(filename, "r"); // opens the file for reading
     if (fp == NULL)
     {
@@ -129,12 +135,9 @@ int main()
     int i = 0, j = 0;
     for (i = 0; i < size; i++)
     {
-        for (j = 0; j < size; j++)
-        {
-            men_rank[i] = (int *)malloc(size * sizeof(int));
-            women_rank[i] = (int *)malloc(size * sizeof(int));
-            marriages[i] = (int *)malloc(size * sizeof(int));
-        }
+        men_rank[i] = malloc(size * sizeof(int));
+        women_rank[i] = malloc(size * sizeof(int));
+        marriages[i] = malloc(size * sizeof(int));
     }
     //populating all the tables
     for (i = 0; i < size; i++)
@@ -174,5 +177,6 @@ int main()
     free(women_rank);
     free(men_rank);
     free(marriages);
+    fclose(fp);
     return 0;
 }
