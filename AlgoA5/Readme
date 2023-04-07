@@ -1,0 +1,47 @@
+how to compile all the programs: make all
+how to remove all executables: make clean
+examples of how to run
+P11:
+./P11
+Brute force program for subset sum problem
+Enter the file name and subset sum: 
+data_A5_Q1_1.txt 1200
+Number of all the subsets: 33554432
+Number of the subsets whose sums are 1200: 8909
+Execution time = 3677 ms
+P12:
+./P12
+Backtracking program for subset sum problem
+Enter the file name and subset sum: 
+data_A5_Q1_1.txt 1200
+Number of dead ends: 2476646
+Number of the subsets whose sums are 1200: 8909
+Execution time = 29 ms
+P21:
+./P21
+Brute force program for assignment problem
+Enter the file name: data_A5_Q2_1.txt
+The number of all possible assignments: 479001600
+Maximum total value: 993
+The person-job assignment selected:
+8 4 2 1 12 6 3 7 11 5 10 9 
+Execution time = 24306 ms
+P22:
+./P22
+Branch and bound program for assignment problem
+Enter the file name: data_A5_Q2_1.txt
+Maximum upper bound: 1044
+Maximum upper bound: 1030
+Maximum upper bound: 1025
+Maximum upper bound: 1025
+Maximum upper bound: 1025
+Maximum upper bound: 1025
+Maximum upper bound: 1004
+Maximum upper bound: 992
+Maximum upper bound: 976
+Maximum upper bound: 976
+Maximum upper bound: 976
+Maximum upper bound: 976
+8 4 9 1 12 6 3 7 11 5 10 2 
+Max total value: 976
+Execution time = 2 ms

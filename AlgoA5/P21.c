@@ -10,7 +10,7 @@
 int min_total = 0;
 int matrix[ROWS][COLS];
 int min_job[ROWS] = {0};
-
+//factorial to find max possible size
 int factorial(int n)
 {
     int result = 1;
@@ -57,7 +57,7 @@ void permute(int *job, int *min_assignment, int i, int n)
         }
     }
 }
-
+//printing for testing purposes
 void printmatrix(int matrix[ROWS][COLS])
 {
     int i, j;
@@ -80,7 +80,10 @@ int main()
 
     int rearranged[ROWS];
     int posassignments = factorial(ROWS);
-
+    char file_name[50] = "data_A5_Q2_1.txt";
+    printf("Brute force program for assignment problem\n");
+    printf("Enter the file name: ");
+    scanf("%s", file_name);
     fp = fopen("data_A5_Q2_1.txt", "r");
     if (fp == NULL)
     {
@@ -113,7 +116,7 @@ int main()
     {
         rearranged[min_job[i]] = i + 1;
     }
-
+    //printing
     printf("The number of all possible assignments: %d\n", posassignments);
     printf("Maximum total value: %d\n", min_total);
     printf("The person-job assignment selected:\n");

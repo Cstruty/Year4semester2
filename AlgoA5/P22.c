@@ -10,44 +10,8 @@
 
 int matrix[ROWS][COLS];
 int used[ROWS] = {0};
-int max_job[ROWS] = {0};
-int best_cost = INT_MIN;
-int findInitHighest()
-{
-    int i, j, max = 0, temp = 0;
 
-    for (i = 0; i < ROWS; i++)
-    {
-        temp = 0;
-        for (j = 0; j < COLS; j++)
-        {
-            if (matrix[i][j] > temp)
-            {
-                temp = matrix[i][j];
-            }
-        }
-        max += temp;
-    }
-    return max;
-}
-int findHighest(int start)
-{
-    int i, j, max = 0;
-
-    for (i = start; i < ROWS; i++)
-    {
-        for (j = 0; j < COLS; j++)
-        {
-            if (matrix[i][j] > max && !used[j])
-            {
-                max = matrix[i][j];
-            }
-        }
-    }
-    return max;
-}
 int finalindex = 0;
-int maxupperbound = 0;
 int runningtotal = 0;
 int findHighest2(int start)
 {
@@ -57,108 +21,77 @@ int findHighest2(int start)
     int total = 0;
     int currentvalue = 0;
     int finaltotal = 0;
-
+    //go through all the current values that were at
     for (int k = 0; k < ROWS; k++)
     {
+        //if it hasn't been used we go through and calculate cost
         if (!used[k])
         {
             currentvalue = matrix[start][k];
-            // printf("currentvalue=%d\n", currentvalue);
-            // printf("current value %d k=%d\n", currentvalue, k);
+
             total = 0;
             used[k] = 1;
-            // printf("start=%d\n", start);
+            //starting at one below the current index we count cost
             for (i = start + 1; i < ROWS; i++)
             {
                 max = 0;
                 for (j = 0; j < ROWS; j++)
                 {
+                    //find the max value for the current person
                     if (matrix[i][j] > max && !used[j])
                     {
-                        // printf("hello\n");
+
                         index = j;
                         max = matrix[i][j];
                     }
                 }
 
-                // printf("%d\n", matrix[i][index]);
-                // if (k == 3)
-                // {
-                //     printf("i=%d index=%d value=%d\n", i, index + 1, max);
-                // }
+                //add to a total
                 total += matrix[i][index];
             }
+            //if for the person cost (k) total is greater than what
+            //has been found so far, we replace the finaltotal
             if (total + currentvalue > finaltotal)
             {
 
                 finaltotal = total + currentvalue;
                 finalindex = k;
             }
+            //make sure to set the used back to 0
             used[k] = 0;
         }
     }
-    printf("finaltotal=%d\n", finaltotal + runningtotal);
+    printf("Maximum upper bound: %d\n", finaltotal + runningtotal);
     return matrix[start][finalindex];
 }
 
-void branchandbound(int assignments[ROWS], int index, int total, int initmax)
+void branchandbound(int job[ROWS])
 {
     int remaining_ub;
     for (int i = 0; i < ROWS; i++)
     {
+        //this goes through each level, finds the maximum upper bound
         remaining_ub = findHighest2(i);
+        //then sets that col to used
         used[finalindex] = 1;
+        //puts the index in the job array
+        job[i] = finalindex;
+        //adds value to running total
         runningtotal += remaining_ub;
     }
-    // = findHighest2(index);
-    // runningtotal += remaining_ub;
-    // remaining_ub = findHighest2(index + 1);
-    // runningtotal += remaining_ub;
     return;
-    // printf("remaining=%d\n", remaining_ub);
-    // return;
-    // printf("person=%d job value=%d\n", ROWS - index, remaining_ub);
-    //not as good as our best cost
-    // return 0;
-    if (total + remaining_ub <= best_cost)
-    {
-
-        return;
-    }
-    //if at end it will assign things
-    if (index == ROWS)
-    {
-        if (total > best_cost)
-        {
-            printf("total= %d\n", total + remaining_ub);
-            best_cost = total;
-            for (int i = 0; i < ROWS; i++)
-            {
-                max_job[i] = assignments[i];
-            }
-        }
-        return;
-    }
-    for (int j = 0; j < ROWS; j++)
-    {
-        if (!used[j])
-        {
-            used[j] = 1;
-            assignments[index] = j;
-            branchandbound(assignments, index + 1, total + matrix[index][j], initmax);
-            used[j] = 0;
-        }
-    }
 }
 int main()
 {
     FILE *fp;
     struct timespec start, end;
     int i, j;
-    int job[ROWS];
-    int assignment[ROWS] = {0};
+    int job[ROWS] = {0};
     int rearranged[ROWS];
-
+    char file_name[50] = "data_A5_Q2_1.txt";
+    printf("Branch and bound program for assignment problem\n");
+    printf("Enter the file name: ");
+    scanf("%s", file_name);
     fp = fopen("data_A5_Q2_1.txt", "r");
     if (fp == NULL)
     {
@@ -181,26 +114,25 @@ int main()
 
     // Brute force algorithm
     //assign jobs in order for first run
-    int initmax = findInitHighest();
+
     timespec_get(&start, TIME_UTC);
-    branchandbound(assignment, 0, 0, initmax);
-    timespec_get(&end, TIME_UTC);
+    branchandbound(job);
 
-    long int elapsed_time_ns = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 1000000.0;
     //flipping the job array, I built it the wrong way but I flip it to what it should be
-    // for (int i = 0; i < ROWS; i++)
-    // {
-    //     rearranged[min_job[i]] = i + 1;
-    // }
+    for (int i = 0; i < ROWS; i++)
+    {
+        rearranged[job[i]] = i + 1;
+    }
 
-    // printf("Maximum total value: %d\n", min_total);
-    // printf("The person-job assignment selected:\n");
+    //printing stuff off
     for (i = 0; i < ROWS; i++)
     {
-        printf("%d ", max_job[i]);
+        printf("%d ", rearranged[i]);
     }
     printf("\n");
-
+    timespec_get(&end, TIME_UTC);
+    printf("Max total value: %d\n", runningtotal);
+    long int elapsed_time_ns = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 100000.0;
     printf("Execution time = %ld ms\n", elapsed_time_ns);
 
     fclose(fp);
